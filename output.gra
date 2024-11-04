@@ -1,0 +1,27 @@
+Alfabeto:
+a b c 
+
+No terminales:
+A B C D E F S X Y 
+
+Producciones:
+A --> a
+B --> b
+C --> BX
+D --> XB
+E --> XF
+F --> BX
+S --> AB
+S --> AC
+S --> AD
+S --> AE
+X --> AY
+X --> BY
+X --> a
+X --> b
+Y --> AY
+Y --> BY
+Y --> a
+Y --> b
+Y --> c
+

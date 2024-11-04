@@ -1,0 +1,12 @@
+
+========= AYUDA DEL PROGRAMA 'Grammar2CNF' =========
+
+Modo de empleo: ./Grammar2CNF input.gra output.gra
+
+Donde input.gra y output.gra son los ficheros que especifican las gramáticas de
+entrada y salida respectivamente
+
+Se recibirá una gramática ya habiendo sido tratada por los tres pasos de simplificación
+que eliminen cadenas vacías, unitarias e inútiles. La salida será el equivalente a la gramática 
+de entrada en CNF (Chomsky's Normal Form/Forma Normal de Chomsky) 
+
