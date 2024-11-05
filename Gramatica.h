@@ -41,4 +41,6 @@ class Gramatica {
   mutable std::set<NoTerminal> no_terminales_;
 };
 
+void ComprobarErrores(std::string);
+
 #endif

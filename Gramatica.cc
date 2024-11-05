@@ -29,6 +29,7 @@ Gramatica::Gramatica() {
 
 // Alfabeto alfabeto, std::set<NoTerminal> producciones
 Gramatica::Gramatica(std::string entrada) {
+  ComprobarErrores(entrada);
   std::fstream input(entrada);
   std::string linea;
   int contador = 0;
@@ -424,4 +425,77 @@ void Gramatica::Imprimir(std::string archivo_salida) {
     }
   }
   salida << "\n";
+}
+
+void ComprobarErrores(std::string entrada) {
+  std::fstream archivo(entrada);
+  std::string linea;
+  int contador = 0;
+  int cardinalidad;
+  int cantidad_nonterminales;
+  std::set<std::string> alfabeto;
+  std::set<std::string> nonterminales;
+  int cantidad_producciones;
+  std::vector<std::string> producciones;
+  std::vector<std::string> identificadores_producciones;
+  while(getline(archivo, linea)) {
+    if(contador == 0) {
+      cardinalidad = stoi(linea);
+    }
+    if((contador > 0) && (contador <= cardinalidad)) {
+      if(linea.size() != 1) {
+        std::cout << "No se permiten terminales de más de un símbolo --> " << linea << "\n";
+        std::cout << "Línea: " << contador + 1 << std::endl;
+        assert(0);
+      }
+      alfabeto.insert(linea);
+    }
+    if(contador == (cardinalidad + 1)) {
+      cantidad_nonterminales = stoi(linea);
+    }
+    if((contador > (cardinalidad + 1)) && (contador < (cardinalidad + 2 + cantidad_nonterminales))) {
+      if(linea.size() != 1) {
+        std::cout << "No se permiten no terminales de más de un símbolo --> " << linea << "\n";
+        std::cout << "Línea: " << contador + 1 << std::endl; 
+        assert(0);
+      }
+      nonterminales.insert(linea);
+      for(auto& simbolo : alfabeto) {
+        if(simbolo == linea) {
+          std::cout << "No se permiten usar el mismo símbolo para terminal y no terminal --> " << linea << "\n";
+          std::cout << "Línea: " << contador + 1 << std::endl;
+          assert(0);
+        }
+      }
+    }
+    if(contador == (cardinalidad + 2 + cantidad_nonterminales)) {
+      cantidad_producciones = stoi(linea);
+    }
+    if(contador > (cardinalidad + 2 + cantidad_nonterminales)) {
+      producciones.push_back(linea);
+      int counter = 0;
+      for(auto& id : linea) {
+        if(counter == 0) {
+          std::string identifier(1, id);
+          identificadores_producciones.push_back(identifier);
+        }
+        counter++;
+      }
+    }
+    contador++;
+  }
+
+  int size = producciones.size();
+  if(size != cantidad_producciones) {
+    std::cout << "El número indicado de producciones no concuerda con el recibido.\n";
+    std::cout << "Número indicado de líneas: " << cantidad_producciones << std::endl;
+    std::cout << "Número recibido de líneas: " << size << std::endl;
+    assert(0);
+  }
+  for(auto& ids : identificadores_producciones) {
+    if(nonterminales.count(ids) == 0) {
+      std::cout << "El no terminal '" << ids << "' no se encuentra en la lista de no terminales.\n";
+      assert(0);
+    }
+  }
 }
