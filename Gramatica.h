@@ -31,7 +31,7 @@ class Gramatica {
   void AgregarNoTerminal(NoTerminal);  // Las nuevas producciones y el identificador
   void Imprimir(std::string);
   char GenerarIdentificador();
-  void ReemplazarProduccion(std::vector<char>, std::vector<char>);
+  void ReemplazarProduccion(std::vector<char>, std::vector<char>, char);
   void GuardarProduccionOrdenada(NoTerminal, std::vector<char>);
   std::vector<char> ReemplazarTerminales(std::vector<char>, std::vector<NoTerminal>);
   void PasoDiezCNF(char, std::vector<char>);

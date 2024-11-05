@@ -193,14 +193,19 @@ char Gramatica::GenerarIdentificador() {
 }
 
 
-void Gramatica::ReemplazarProduccion(std::vector<char> prod, std::vector<char> nueva_produccion) {
+void Gramatica::ReemplazarProduccion(std::vector<char> prod, std::vector<char> nueva_produccion, char identificador_produccion) {
   std::set<NoTerminal> producciones;
   for(auto& nonterminales : this->GetNoTerminales()) {
     NoTerminal no_terminal;
     no_terminal.SetIdentificador(nonterminales.GetIdentificador());
     for(auto& produccion : nonterminales.GetProducciones()) {
-      if(prod == produccion) {
-        no_terminal.AgregarProduccion(nueva_produccion);
+      if(identificador_produccion == nonterminales.GetIdentificador()) {
+        if(prod == produccion) {
+          no_terminal.AgregarProduccion(nueva_produccion);
+        }
+        else {
+          no_terminal.AgregarProduccion(produccion);
+        }
       }
       else {
         no_terminal.AgregarProduccion(produccion);
@@ -295,7 +300,7 @@ void Gramatica::PasoDiezCNF(char identificador_primero, std::vector<char> produc
       no_terminal.AgregarProduccion(producciones_nuevas);
       this->AgregarNoTerminal(no_terminal);
       // 11: Replace the production A → B1B2 . . . Bm with productions:
-      this->ReemplazarProduccion(produccion, producciones_nuevas);
+      this->ReemplazarProduccion(produccion, producciones_nuevas, identificador_primero);
     }
     if((i > 0) && (i < size - 2)) {
       // 12: A → B1D1
@@ -383,8 +388,6 @@ Gramatica Gramatica::CFG2CNF() {
             nonterm.insert(symbol);
           }
         }
-      }
-      if(contador_no_terminales > 2) {
         // 10: Add m − 2 non-terminal symbols D1D2 . . . Dm−2;
         // 11: Replace the production A → B1B2 . . . Bm with productions:
         // 12: A → B1D1
