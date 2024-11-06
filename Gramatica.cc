@@ -27,7 +27,8 @@ Gramatica::Gramatica() {
   no_terminales_ = no_terminales;
 }
 
-// Alfabeto alfabeto, std::set<NoTerminal> producciones
+/// @brief Constructor de clase
+/// @param entrada nombre del archivo de entrada
 Gramatica::Gramatica(std::string entrada) {
   ComprobarErrores(entrada);
   std::fstream input(entrada);
@@ -79,7 +80,8 @@ Gramatica::Gramatica(std::string entrada) {
       for(char& simbolo : linea) {
         if(simbolo == '&') {
           std::cout << "No pueden haber producciones vacías '&' en la gramática.\n";
-          assert(0);
+          std::cout << "Línea: " << contador + 1 << std::endl;
+          //assert(0);
         }
         if(simbolo != ' ') {  // No se guardan los espacios para hacerlo más simple
           // Produccion es el vector que será el atributo, pero cadena lo usaremos para comprobar
@@ -151,6 +153,11 @@ Gramatica::Gramatica(std::string entrada) {
 }
 
 
+/// @brief modifica una produccion y cambia un símbolo de ella
+/// @param simbolo nuevo a cambiar en la cadena de produccion
+/// @param identificador no terminal al que pertenece la produccion
+/// @param producciones produccion a la que vamos a cambiar el símbolo
+/// @return nueva producion modificada
 std::vector<char> ReemplazarSimbolos(char simbolo, char identificador, std::vector<char>  producciones) {
   std::vector<char> nueva_cadena;
   for(auto& symbol : producciones) {
@@ -192,7 +199,10 @@ char Gramatica::GenerarIdentificador() {
   return '?';
 }
 
-
+/// @brief Reemplaza una produccion por otra en el no terminal recibido
+/// @param prod cadena de produccion anterior
+/// @param nueva_produccion nueva cadena de produccion que reemplaza a la otra
+/// @param identificador_produccion identificador del no terminal
 void Gramatica::ReemplazarProduccion(std::vector<char> prod, std::vector<char> nueva_produccion, char identificador_produccion) {
   std::set<NoTerminal> producciones;
   for(auto& nonterminales : this->GetNoTerminales()) {
@@ -251,7 +261,10 @@ void Gramatica::GuardarProduccionOrdenada(NoTerminal nonterminales, std::vector<
   }
 }
   
-
+/// @brief Reemplaza simbolos terminales
+/// @param produccion cadena con terminales
+/// @param nuevos_ids identificadores de los no terminales nuevos
+/// @return nueva cadena con terminals modificados a no terminales
 std::vector<char> Gramatica::ReemplazarTerminales(std::vector<char> produccion, std::vector<NoTerminal> nuevos_ids) {
   std::vector<char> reemplazo;
   for(auto& simbolo : produccion) {
@@ -273,7 +286,9 @@ std::vector<char> Gramatica::ReemplazarTerminales(std::vector<char> produccion, 
   return reemplazo;
 }
 
-
+/// @brief Sigue desde el paso diez a adelante en el algoritmo de CNF 
+/// @param identificador_primero identificador del no terminal: A → B1B2
+/// @param produccion la produccion del no terminal: A → B1B2
 void Gramatica::PasoDiezCNF(char identificador_primero, std::vector<char> produccion) {
   Gramatica gramatica_auxiliar;
   gramatica_auxiliar.SetAlfabeto(this->GetAlfabeto());
@@ -500,5 +515,30 @@ void ComprobarErrores(std::string entrada) {
       std::cout << "El no terminal '" << ids << "' no se encuentra en la lista de no terminales.\n";
       assert(0);
     }
+  }
+}
+
+/// @brief 
+void Gramatica::IsRightLinear() {
+  bool lineal_derecha = true;
+  for(auto& nonterminales : this->GetNoTerminales()) {
+    for(auto& producciones : nonterminales.GetProducciones()) {
+      if(this->GetAlfabeto().GetSimbolos().count(producciones[0]) == 1) {
+        if(this->GetAlfabeto().GetSimbolos().count(producciones[producciones.size()]) == 0) {
+        }
+        else {
+          lineal_derecha = false;
+        }
+      }
+      else {
+        lineal_derecha = false;
+      }
+    }
+  }
+  if(lineal_derecha) {
+    std::cout << "This grammar is right-linear.\n";
+  }
+  else {
+    std::cout << "This grammar is not right-linear.\n";
   }
 }

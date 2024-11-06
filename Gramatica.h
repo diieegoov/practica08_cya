@@ -36,6 +36,7 @@ class Gramatica {
   std::vector<char> ReemplazarTerminales(std::vector<char>, std::vector<NoTerminal>);
   void PasoDiezCNF(char, std::vector<char>);
   Gramatica CFG2CNF();
+  void IsRightLinear();
  private:
   Alfabeto alfabeto_;
   mutable std::set<NoTerminal> no_terminales_;

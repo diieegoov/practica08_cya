@@ -24,6 +24,7 @@ int main(const int argc, char* argv[]) {
   }
   std::string entrada = LeerEntrada(argv);
   Gramatica gramatica{entrada};
+  gramatica.IsRightLinear();
   std::string salida = LeerSalida(argv);
   Gramatica gramatica_cnf = gramatica.CFG2CNF();
   gramatica_cnf.Imprimir(salida);

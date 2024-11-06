@@ -1,27 +1,20 @@
 Alfabeto:
-a b c 
+a b 
 
 No terminales:
-A B C D E F S X Y 
+A B C D E F S 
 
 Producciones:
+A --> CS
+A --> DE
 A --> a
+B --> CF
+B --> DS
 B --> b
-C --> BX
-D --> XB
-E --> XF
-F --> BX
-S --> AB
-S --> AC
-S --> AD
-S --> AE
-X --> AY
-X --> BY
-X --> a
-X --> b
-Y --> AY
-Y --> BY
-Y --> a
-Y --> b
-Y --> c
+C --> a
+D --> b
+E --> AA
+F --> BB
+S --> CA
+S --> DA
 
