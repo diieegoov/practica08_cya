@@ -81,7 +81,7 @@ Gramatica::Gramatica(std::string entrada) {
         if(simbolo == '&') {
           std::cout << "No pueden haber producciones vacías '&' en la gramática.\n";
           std::cout << "Línea: " << contador + 1 << std::endl;
-          //assert(0);
+          assert(0);
         }
         if(simbolo != ' ') {  // No se guardan los espacios para hacerlo más simple
           // Produccion es el vector que será el atributo, pero cadena lo usaremos para comprobar
